@@ -1,22 +1,22 @@
 " =============================================================================
-" File:          plugin/extractpartial.vim
+" File:          plugin/partial.vim
 " Description:   Makes creating partials in your code a breeze!
 " Author:        Javier Blanco <http://jbgutierrez.info>
 " =============================================================================
 
-if ( exists('g:loaded_extractpartial') && g:loaded_extractpartial ) || v:version < 700 || &cp
+if ( exists('g:loaded_partial') && g:loaded_partial ) || v:version < 700 || &cp
   finish
 endif
-let g:loaded_extractpartial = 1
+let g:loaded_partial = 1
 
 " Mappings {{{
 
-if !exists('g:extractpartial_mappings')
-  let g:extractpartial_mappings = '<leader>x'
+if !exists('g:partial_mappings')
+  let g:partial_mappings = '<leader>x'
 endif
 
-if g:extractpartial_mappings != ''
-  exe 'vnoremap <silent> '.g:extractpartial_mappings.' :call <sid>extractpartial()<cr>'
+if g:partial_mappings != ''
+  exe 'vnoremap <silent> '.g:partial_mappings.' :call <sid>partial()<cr>'
 endif
 
 " }}}
@@ -31,7 +31,7 @@ function! s:error(str)
 endfunction
 
 function! s:debug(str)
-  if exists("g:extractpartial_debug") && g:extractpartial_debug
+  if exists("g:partial_debug") && g:partial_debug
     echohl Debug
     echomsg a:str
     echohl None
@@ -42,7 +42,7 @@ function! s:sub(str,pat,rep)
   return substitute(a:str,'\v\C'.a:pat,a:rep,'')
 endfunction
 
-function! s:extractpartial() range abort
+function! s:partial() range abort
   let templates = {
         \   'css'  : "@import url('%s');" ,
         \   'dust' : '{> "%s" /}'         ,
@@ -54,8 +54,8 @@ function! s:extractpartial() range abort
         \   'slim' : "== render '%s'"
         \ }
 
-  if exists("g:extractpartial_templates")
-    call extend(templates, g:extractpartial_templates)
+  if exists("g:partial_templates")
+    call extend(templates, g:partial_templates)
   endif
 
   let fname = expand('%')
@@ -116,7 +116,7 @@ endfunction
 "}}}
 
 " Commands {{{
-command! -range ExtractPartial <line1>,<line2>call <sid>extractpartial()
+command! -range ExtractPartial <line1>,<line2>call <sid>partial()
 "}}}
 
 " vim:fen:fdm=marker:fmr={{{,}}}:fdl=0:fdc=1:ts=2:sw=2:sts=2
