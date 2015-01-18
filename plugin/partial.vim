@@ -67,6 +67,10 @@ function! s:partial() range abort
     return
   endif
 
+  if extension != fnamemodify(pname, ':e')
+    let pname .= '.'.extension
+  endif
+
   if filereadable(pname)
     return s:error('E13: File exists')
   endif
