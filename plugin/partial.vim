@@ -38,7 +38,7 @@ function! s:sub(str,pat,rep)
   return substitute(a:str,'\v\C'.a:pat,a:rep,'')
 endfunction
 
-function! s:partial() range abort
+function! s:partial(bang) range abort
   let templates = {
         \   'css'  : "@import url('%s');"   ,
         \   'dust' : '{> "%s" /}'           ,
@@ -71,7 +71,7 @@ function! s:partial() range abort
     let pname .= '.'.extension
   endif
 
-  if filereadable(pname)
+  if filereadable(pname) && !a:bang
     return s:error('E13: File exists')
   endif
 
@@ -118,7 +118,7 @@ endfunction
 " Commands {{{
 
 if !exists(":PartialExtract")
-  command -range PartialExtract <line1>,<line2>call <sid>partial()
+  command -bang -range PartialExtract <line1>,<line2>call <sid>partial(<bang>0)
 endif
 
 "}}}
