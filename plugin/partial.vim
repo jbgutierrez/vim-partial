@@ -83,7 +83,7 @@ function! s:partial() range abort
   let last = a:lastline
   let range = first.",".last
   let spaces = matchstr(getline(first),'^\s*')
-  let partial = fnamemodify(pname,":r:s/.*\(views\|templates\)//")
+  let partial = fnamemodify(pname, ':r:s?\v.*/(views|templates)/??')
 
   let buf = @@
   let ai = &ai
