@@ -11,12 +11,8 @@ let g:loaded_partial = 1
 
 " Mappings {{{
 
-if !exists('g:partial_mappings')
-  let g:partial_mappings = '<leader>x'
-endif
-
-if g:partial_mappings != ''
-  exe 'vnoremap <silent> '.g:partial_mappings.' :call <sid>partial()<cr>'
+if !hasmapto(':PartialExtract')
+  vmap <unique> <leader>x :PartialExtract<cr>
 endif
 
 " }}}
@@ -44,13 +40,13 @@ endfunction
 
 function! s:partial() range abort
   let templates = {
-        \   'css'  : "@import url('%s');" ,
-        \   'dust' : '{> "%s" /}'         ,
+        \   'css'  : "@import url('%s');"   ,
+        \   'dust' : '{> "%s" /}'           ,
         \   'erb'  : "<%%= render '%s' %%>" ,
-        \   'haml' : "= render '%s'"      ,
+        \   'haml' : "= render '%s'"        ,
         \   'html' : "<%%= render '%s' %%>" ,
-        \   'sass' : "@import '%s'"       ,
-        \   'scss' : "@import '%s';"      ,
+        \   'sass' : "@import '%s'"         ,
+        \   'scss' : "@import '%s';"        ,
         \   'slim' : "== render '%s'"
         \ }
 
@@ -116,7 +112,11 @@ endfunction
 "}}}
 
 " Commands {{{
-command! -range ExtractPartial <line1>,<line2>call <sid>partial()
+
+if !exists(":PartialExtract")
+  command -range PartialExtract <line1>,<line2>call <sid>partial()
+endif
+
 "}}}
 
 " vim:fen:fdm=marker:fmr={{{,}}}:fdl=0:fdc=1:ts=2:sw=2:sts=2
