@@ -127,7 +127,7 @@ endif
 
 augroup partialPluginAuto
   autocmd!
-  autocmd BufEnter * exe "set suffixesadd=.".expand('%:e')
+  autocmd BufEnter * exe "setlocal suffixesadd=.".expand('%:e')
 augroup END
 
 " }}}
