@@ -123,13 +123,13 @@ endif
 
 "}}}
 
-" Autocommands {{{1
+" Autocommands {{{
 
 augroup partialPluginAuto
   autocmd!
   autocmd BufEnter * exe "set suffixesadd=.".expand('%:e')
 augroup END
 
-" }}}1
+" }}}
 
 " vim:fen:fdm=marker:fmr={{{,}}}:fdl=0:fdc=1:ts=2:sw=2:sts=2
