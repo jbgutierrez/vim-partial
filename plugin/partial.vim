@@ -38,52 +38,50 @@ function! s:sub(str,pat,rep)
   return substitute(a:str,'\v\C'.a:pat,a:rep,'')
 endfunction
 
+let s:templates = {
+      \   'css'  : "@import url('%s');"   ,
+      \   'dust' : '{> "%s" /}'           ,
+      \   'erb'  : "<%%= render '%s' %%>" ,
+      \   'haml' : "= render '%s'"        ,
+      \   'html' : "<%%= render '%s' %%>" ,
+      \   'sass' : "@import '%s'"         ,
+      \   'scss' : "@import '%s';"        ,
+      \   'slim' : "== render '%s'"
+      \ }
+
+if exists("g:partial_templates")
+  call extend(s:templates, g:partial_templates)
+endif
+
 function! s:partial(bang) range abort
-  let templates = {
-        \   'css'  : "@import url('%s');"   ,
-        \   'dust' : '{> "%s" /}'           ,
-        \   'erb'  : "<%%= render '%s' %%>" ,
-        \   'haml' : "= render '%s'"        ,
-        \   'html' : "<%%= render '%s' %%>" ,
-        \   'sass' : "@import '%s'"         ,
-        \   'scss' : "@import '%s';"        ,
-        \   'slim' : "== render '%s'"
-        \ }
-
-  if exists("g:partial_templates")
-    call extend(templates, g:partial_templates)
-  endif
-
-  let fname = expand('%')
-  let extension = fnamemodify(fname, ":e")
-  if !has_key(templates, extension)
+  let extension = expand('%:e')
+  if !has_key(s:templates, extension)
     return s:error('Unsupported file type')
   endif
+  let template = s:templates[extension]
 
-  let template = templates[extension]
-  let pname = input('Partial name: ', fnamemodify(fname, ":r"), 'file')
+  let filename = expand('%')
+  let basename = fnamemodify(filename, ':r:r')
+  let partial_name = input('Partial name: ', basename, 'file')
+  if partial_name == '' || partial_name == filename | return | endif
 
-  if pname == '' || pname == fname
-    return
-  endif
+  let extensions = fnamemodify(filename, ':e:e')
+  let partial_name = fnamemodify(partial_name, ':r:r:s?\v.*/(views|templates)/??').".".extensions
 
-  if extension != fnamemodify(pname, ':e')
-    let pname .= '.'.extension
-  endif
-
-  if filereadable(pname) && !a:bang
+  if filereadable(partial_name) && !a:bang
     return s:error('E13: File exists')
   endif
 
-  if !isdirectory(fnamemodify(pname, ':h'))
-    call mkdir(fnamemodify(pname, ':h'), 'p')
+  let folder = fnamemodify(partial_name, ':h')
+  if !isdirectory(folder)
+    call mkdir(folder, 'p')
   endif
 
   let first = a:firstline
   let last = a:lastline
   let range = first.",".last
   let spaces = matchstr(getline(first),'^\s*')
-  let partial = fnamemodify(pname, ':r:s?\v.*/(views|templates)/??')
+  let partial = fnamemodify(partial_name, ':r:r:s?\v(.*)_([^/^.]+)[^/]*?\1\2?')
 
   let buf = @@
   let ai = &ai
@@ -102,7 +100,7 @@ function! s:partial(bang) range abort
   endif
 
   try
-    silent! exe "w! ".pname
+    silent! exe "w! ".partial_name
   catch
     s:error('E80 Error while writing')
   endtry
