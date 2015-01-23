@@ -44,6 +44,7 @@ let s:templates = {
       \   'erb'  : "<%%= render '%s' %%>" ,
       \   'haml' : "= render '%s'"        ,
       \   'html' : "<%%= render '%s' %%>" ,
+      \   'less' : "@import '%s';"        ,
       \   'sass' : "@import '%s'"         ,
       \   'scss' : "@import '%s';"        ,
       \   'slim' : "== render '%s'"
