@@ -1,0 +1,127 @@
+*partial.txt*   easily extract partials from your code
+
+                    _               ___           _   _       _
+             /\   /(_)_ __ ___     / _ \__ _ _ __| |_(_) __ _| |
+             \ \ / / | '_ ` _ \   / /_)/ _` | '__| __| |/ _` | |
+              \ V /| | | | | | | / ___/ (_| | |  | |_| | (_| | |
+               \_/ |_|_| |_| |_| \/    \__,_|_|   \__|_|\__,_|_|
+
+                Makes creating partials in your code a breeze!
+
+==============================================================================
+CONTENTS                                                     *Partial-contents*
+
+    1. Usage ..................................... |PartialUsage|
+    2. Configurations ............................ |PartialConfig|
+        2.1 Default Mapping ...................... |PartialConfig_mapping|
+        2.2 loaded_partial ....................... |PartialConfig_debug|
+        2.3 partial_templates .................... |PartialConfig_disable|
+    3. Implementation details..................... |PartialModes|
+    4. Contributing .............................. |PartialContributing|
+    5. Bugs ...................................... |PartialContributing|
+    6. Credits ................................... |PartialCredits|
+    7. Changelog ................................. |PartialChangelog|
+    9. License ................................... |PartialLicense|
+
+
+==============================================================================
+1. Usage                                                         *PartialUsage*
+
+Partial plugin is a tool developed to help you break down your code in
+partials. Simply select some lines on Visual mode, hit `<leader>x`, enter the
+desired partial location and the plugin will place the appropiate replacement.
+
+==============================================================================
+2. Configuration                                                *PartialConfig*
+
+You can tweak the behavior of Partial by setting a few variables in your
+|vimrc| file. For example: >
+
+------------------------------------------------------------------------------
+2.1 Default Mapping                                     *PartialConfig_mapping*
+
+The default mapping to extract a partial is `<leader>x`.
+You can easy map it to other keys. For example:
+
+    vmap <Leader>P :PartialExtract<cr>
+
+------------------------------------------------------------------------------
+2.1 g:loaded_partial                                     *PartialConfig_loaded*
+
+Set this to 1 to force Partial to reload every time its file is sourced.
+
+Options: 0 or 1
+Default: 0 (Partial is loaded only once)
+
+------------------------------------------------------------------------------
+2.2 g:partial_templates                                *PartialConfig_templates*
+
+Common file extensions are supported (Markup: .dust, .erb, .haml, .slim -
+Stylesheet: .css, .less, .sass, .scss) and you can widen this list by
+declaring a dictionary like so:
+
+    let g:partial_templates = {
+          \   'ejs': '<% include %s %>',
+          \   'hbs': '{{> %s }}'
+          \ }
+
+==============================================================================
+3. Implementation details                                      *PartialLicense*
+
+After triggering `:PartialExtract` the editor will:
+
+    * throw an error if the file type is not supoorted
+      (you may want to expand this list!)
+    * suggest a folder with the same name as the file you are working in
+      (without extensions)
+    * throw an error if the file exists (you can overcome this error
+      by triggering `:PartialExtract!`)
+    * ensure the file has the proper extension(s) and create intermediate
+      directories as required
+    * dispose any preceding underscores on the partial name
+    * set partial path relative to the current directory name or
+      views/templates ancestor folder
+    * save the partial content getting rid of unneeded leading spaces
+    * make the replacement
+
+==============================================================================
+4. Bugs                                                           *PartialBugs*
+
+Please report any bugs you may find on the GitHub issue tracker:
+
+    http://github.com/jbgutierrez/partial.vim/issues
+
+==============================================================================
+5. Contributing                                           *PartialContributing*
+
+Think you can make Partial better?  Awesome.  New contributors are always
+welcome.
+
+Fork the project on GitHub and send a pull request.
+
+    GitHub:    http://github.com/jbgutierrez/partial.vim
+
+==============================================================================
+6. Changelog                                                 *PartialChangelog*
+
+v0.0.1
+    * First working version
+
+==============================================================================
+7. Credits                                                     *PartialCredits*
+
+I've borrow the core idea from the following two plugins:
+
+    * https://github.com/tpope/vim-rails - highly recommended
+    * https://github.com/wesf90/rails-partial - sublime users
+
+==============================================================================
+8. License                                                     *PartialLicense*
+
+Partial is licensed under the MIT license.
+See http://opensource.org/licenses/MIT
+
+==============================================================================
+
+
+ vim:ts=4:et:ft=help:
