@@ -127,6 +127,7 @@ endif
 augroup partialPluginAuto
   autocmd!
   autocmd BufEnter * exe "setlocal suffixesadd=.".expand('%:e')
+  autocmd BufEnter * if &includeexpr == '' | setlocal includeexpr=substitute(v:fname,'\\v([^\\^/]+)$','_\\1','') | end
 augroup END
 
 " }}}
