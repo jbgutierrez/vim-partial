@@ -71,7 +71,7 @@ let s:create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
 function! s:partial(bang) range abort
   let extension = expand('%:e')
   if !has_key(s:templates, extension)
-    return s:error('Unsupported file type')
+    return s:error('Unsupported file type (see :help partial_templates)')
   endif
   let template = s:templates[extension]
 
@@ -97,7 +97,7 @@ function! s:partial(bang) range abort
     if s:create_dirs
       call mkdir(folder, 'p')
     else
-      return s:error("Folder '".folder."' doesn't exists")
+      return s:error("Folder '".folder."' doesn't exists (see :help partial_create_dirs)")
     endif
   endif
 
