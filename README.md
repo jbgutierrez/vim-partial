@@ -49,6 +49,12 @@ Set this to 1 if you to create a vertical split
 Options: 0 or 1
 Default: 0 (Horizontal split)
 
+### g:partial_create_dirs
+Set this to 0 if you don't want Partial to create new directories
+
+Options: 0 or 1
+Default: 1 (Create directories as required)
+
 ## Implementation details
 
 After triggering `:PartialExtract` the editor will:

@@ -53,6 +53,7 @@ let s:templates = {
 if exists("g:partial_templates") | call extend(s:templates, g:partial_templates) | endif
 let s:partial_keep_position  = exists("g:partial_keep_position")  ? g:partial_keep_position  : 1
 let s:partial_vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
+let s:partial_create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
 
 function! s:partial(bang) range abort
   let extension = expand('%:e')
@@ -75,7 +76,11 @@ function! s:partial(bang) range abort
 
   let folder = fnamemodify(partial_name, ':h')
   if !isdirectory(folder)
-    call mkdir(folder, 'p')
+    if s:partial_create_dirs
+      call mkdir(folder, 'p')
+    else
+      return s:error("Folder '".folder."' doesn't exists")
+    endif
   endif
 
   let first = a:firstline
