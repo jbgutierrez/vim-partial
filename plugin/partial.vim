@@ -51,6 +51,18 @@ let s:templates = {
       \ }
 
 if exists("g:partial_templates") | call extend(s:templates, g:partial_templates) | endif
+
+let s:partial_templates_roots = [
+      \ 'css',
+      \ 'sass',
+      \ 'styles',
+      \ 'stylesheets',
+      \ 'templates',
+      \ 'views'
+      \ ]
+if exists("g:partial_templates_roots") | call extend(s:partial_templates_roots_re, g:partial_templates_roots) | endif
+let s:templates_roots_re = '\v(.*[\/])('.join(s:partial_templates_roots_re, '|').')[\/]'
+
 let s:partial_keep_position  = exists("g:partial_keep_position")  ? g:partial_keep_position  : 1
 let s:partial_vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
 let s:partial_create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
@@ -63,18 +75,23 @@ function! s:partial(bang) range abort
   let template = s:templates[extension]
 
   let filename = expand('%')
-  let basename = fnamemodify(filename, ':r:r')
+  let templates_root = expand('%:p:s?'.s:partial_templates_roots_re.'.*?\1\2?')
+  if templates_root == expand('%:p')
+    return s:error("Destination path must be within a known root for templates (see :help partial_templates_roots)")
+  endif
+  let basename = expand('%:p:s?'.s:partial_templates_roots_re.'(.*)?\3?:r:r')
+
   let partial_name = input('Partial name: ', basename, 'file')
   if partial_name == '' || partial_name == filename | return | endif
 
   let extensions = fnamemodify(filename, ':e:e')
-  let partial_name = fnamemodify(partial_name, ':r:r:s?\v.*[\/](views|templates)[\/]??').".".extensions
+  let partial_name = fnamemodify(partial_name, ':r:r').".".extensions
 
   if filereadable(partial_name) && !a:bang
     return s:error('E13: File exists')
   endif
 
-  let folder = fnamemodify(partial_name, ':h')
+  let folder = templates_root."/".fnamemodify(partial_name, ':h')
   if !isdirectory(folder)
     if s:partial_create_dirs
       call mkdir(folder, 'p')
@@ -87,7 +104,7 @@ function! s:partial(bang) range abort
   let last = a:lastline
   let range = first.",".last
   let spaces = matchstr(getline(first),'^\s*')
-  let partial = fnamemodify(partial_name, ':r:r:s?\v(.*)_([^/^.]+)[^/]*?\1\2?:s?\v\?/?g')
+  let partial = fnamemodify(partial_name, ':r:r:s?'.s:partial_templates_roots_re.'??:s?\v(.*)_([^/^.]+)[^/]*?\1\2?:s?\v\?/?g')
 
   let buf = @@
   let winnr = winnr()
@@ -113,7 +130,7 @@ function! s:partial(bang) range abort
   endif
 
   try
-    silent! exe "w! ".partial_name
+    silent! exe "w! ".templates_root."/".partial_name
   catch
     s:error('E80 Error while writing')
   endtry

@@ -37,6 +37,18 @@ let g:partial_templates = {
       \ }
 ```
 
+### g:partial_templates_roots
+Partial works with a list of usual roots for keeping your templates.
+If you happen to use an uncommon root folder you can extend this list
+like so:
+
+``` vim
+let s:partial_templates_roots = [
+      \ 'stylus',
+      \ 'tmpls'
+      \ ]
+```
+
 ### g:partial_keep_position
 Set this to 0 if you want to continue with the edition of the partial file
 
@@ -64,7 +76,7 @@ After triggering `:PartialExtract` the editor will:
   * throw an error if the file exists (you can overcome this error by triggering `:PartialExtract!`)
   * ensure the file has the proper extension(s) and create intermediate directories as required
   * dispose any preceding underscores on the partial name
-  * set partial path relative to the current directory name or views/templates ancestor folder
+  * set partial path relative to the templates folder
   * save the partial content getting rid of unneeded leading spaces
   * make the replacement
 
