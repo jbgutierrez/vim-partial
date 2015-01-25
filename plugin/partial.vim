@@ -52,7 +52,7 @@ let s:templates = {
 
 if exists("g:partial_templates") | call extend(s:templates, g:partial_templates) | endif
 
-let s:partial_templates_roots = [
+let s:templates_roots = [
       \ 'css',
       \ 'sass',
       \ 'styles',
@@ -60,13 +60,13 @@ let s:partial_templates_roots = [
       \ 'templates',
       \ 'views'
       \ ]
-if exists("g:partial_templates_roots") | call extend(s:partial_templates_roots_re, g:partial_templates_roots) | endif
-let s:templates_roots_re = '\v(.*[\/])('.join(s:partial_templates_roots_re, '|').')[\/]'
+if exists("g:partial_templates_roots") | call extend(s:templates_roots, g:partial_templates_roots) | endif
+let s:templates_roots_re = '\v(.*[\/])('.join(s:templates_roots, '|').')[\/]'
 
-let s:partial_use_splits  = exists("g:partial_use_splits")  ? g:partial_use_splits  : 0
-let s:partial_keep_position  = exists("g:partial_keep_position")  ? g:partial_keep_position  : 1
-let s:partial_vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
-let s:partial_create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
+let s:use_splits = exists("g:partial_use_splits") ? g:partial_use_splits : 0
+let s:keep_position = exists("g:partial_keep_position") ? g:partial_keep_position : 1
+let s:vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
+let s:create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
 
 function! s:partial(bang) range abort
   let extension = expand('%:e')
@@ -76,11 +76,11 @@ function! s:partial(bang) range abort
   let template = s:templates[extension]
 
   let filename = expand('%')
-  let templates_root = expand('%:p:s?'.s:partial_templates_roots_re.'.*?\1\2?')
+  let templates_root = expand('%:p:s?'.s:templates_roots_re.'.*?\1\2?')
   if templates_root == expand('%:p')
     return s:error("Destination path must be within a known root for templates (see :help partial_templates_roots)")
   endif
-  let basename = expand('%:p:s?'.s:partial_templates_roots_re.'(.*)?\3?:r:r')
+  let basename = expand('%:p:s?'.s:templates_roots_re.'(.*)?\3?:r:r')
 
   let partial_name = input('Partial name: ', basename, 'file')
   if partial_name == '' || partial_name == filename | return | endif
@@ -94,7 +94,7 @@ function! s:partial(bang) range abort
 
   let folder = templates_root."/".fnamemodify(partial_name, ':h')
   if !isdirectory(folder)
-    if s:partial_create_dirs
+    if s:create_dirs
       call mkdir(folder, 'p')
     else
       return s:error("Folder '".folder."' doesn't exists")
@@ -105,7 +105,7 @@ function! s:partial(bang) range abort
   let last = a:lastline
   let range = first.",".last
   let spaces = matchstr(getline(first),'^\s*')
-  let partial = fnamemodify(partial_name, ':r:r:s?'.s:partial_templates_roots_re.'??:s?\v(.*)_([^/^.]+)[^/]*?\1\2?:s?\v\?/?g')
+  let partial = fnamemodify(partial_name, ':r:r:s?'.s:templates_roots_re.'??:s?\v(.*)_([^/^.]+)[^/]*?\1\2?:s?\v\?/?g')
 
   let buf = @@
   let winnr = winnr()
@@ -113,7 +113,7 @@ function! s:partial(bang) range abort
   let splitright = &splitright
   let splitbelow = &splitbelow
   let &autoindent = 0
-  if s:partial_keep_position
+  if s:keep_position
     let &splitright = 1
     let &splitbelow = 1
   end
@@ -122,7 +122,7 @@ function! s:partial(bang) range abort
   silent! exe range."yank"
   silent! exe "normal! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
 
-  if s:partial_vertical_split | vnew | else | new | end
+  if s:vertical_split | vnew | else | new | end
 
   silent! put
   0delete
@@ -139,7 +139,7 @@ function! s:partial(bang) range abort
   let &autoindent = autoindent
   let &splitright = splitright
   let &splitbelow = splitbelow
-  if s:partial_use_splits | exe winnr . "wincmd w" | else | close | endif
+  if s:use_splits | exe winnr . "wincmd w" | else | close | endif
   let @@ = buf
 endfunction
 
