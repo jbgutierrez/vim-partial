@@ -52,6 +52,7 @@ let s:templates = {
 
 if exists("g:partial_templates") | call extend(s:templates, g:partial_templates) | endif
 let s:partial_keep_position  = exists("g:partial_keep_position")  ? g:partial_keep_position  : 1
+let s:partial_vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
 
 function! s:partial(bang) range abort
   let extension = expand('%:e')
@@ -97,6 +98,8 @@ function! s:partial(bang) range abort
   let replacement = printf(template, partial)
   silent! exe range."yank"
   silent! exe "normal! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
+
+  if s:partial_vertical_split | vnew | else | new | end
 
   silent! put
   0delete

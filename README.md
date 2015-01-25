@@ -43,6 +43,12 @@ Set this to 0 if you want to continue with the edition of the partial file
 Options: 0 or 1
 Default: 1 (Cursor stays on the same position after replacement)
 
+### g:partial_vertical_split
+Set this to 1 if you to create a vertical split
+
+Options: 0 or 1
+Default: 0 (Horizontal split)
+
 ## Implementation details
 
 After triggering `:PartialExtract` the editor will:

@@ -11,18 +11,19 @@
 ==============================================================================
 CONTENTS                                                     *Partial-contents*
 
-    1. Usage ..................................... |PartialUsage|
-    2. Configurations ............................ |PartialConfig|
-        2.1 Default Mapping ...................... |PartialConfig_mapping|
-        2.2 loaded_partial ....................... |PartialConfig_debug|
-        2.3 partial_templates .................... |PartialConfig_templates|
-        2.4 partial_keep_position ................ |PartialConfig_keep_position|
-    3. Implementation details..................... |PartialModes|
-    4. Contributing .............................. |PartialContributing|
-    5. Bugs ...................................... |PartialContributing|
-    6. Credits ................................... |PartialCredits|
-    7. Changelog ................................. |PartialChangelog|
-    9. License ................................... |PartialLicense|
+    1. Usage ................................... |PartialUsage|
+    2. Configurations .......................... |PartialConfig|
+        2.1 Default Mapping .................... |PartialConfig_mapping|
+        2.2 loaded_partial ..................... |PartialConfig_debug|
+        2.3 partial_templates .................. |PartialConfig_templates|
+        2.4 partial_keep_position .............. |PartialConfig_keep_position|
+        2.5 partial_vertical_split ............. |PartialConfig_vertical_split|
+    3. Implementation details................... |PartialModes|
+    4. Contributing ............................ |PartialContributing|
+    5. Bugs .................................... |PartialContributing|
+    6. Credits ................................. |PartialCredits|
+    7. Changelog ............................... |PartialChangelog|
+    9. License ................................. |PartialLicense|
 
 
 ==============================================================================
@@ -73,6 +74,14 @@ Set this to 0 if you want to continue with the edition of the partial file
 
 Options: 0 or 1
 Default: 1 (Cursor stays on the same position after replacement)
+
+------------------------------------------------------------------------------
+2.5 g:partial_vertical_split                     *PartialConfig_vertical_split*
+
+Set this to 1 if you to create a vertical split
+
+Options: 0 or 1
+Default: 0 (Horizontal split)
 
 ==============================================================================
 3. Implementation details                                      *PartialLicense*
