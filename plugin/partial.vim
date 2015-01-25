@@ -67,7 +67,7 @@ function! s:partial(bang) range abort
   if partial_name == '' || partial_name == filename | return | endif
 
   let extensions = fnamemodify(filename, ':e:e')
-  let partial_name = fnamemodify(partial_name, ':r:r:s?\v.*/(views|templates)/??').".".extensions
+  let partial_name = fnamemodify(partial_name, ':r:r:s?\v.*[\/](views|templates)[\/]??').".".extensions
 
   if filereadable(partial_name) && !a:bang
     return s:error('E13: File exists')
@@ -82,7 +82,7 @@ function! s:partial(bang) range abort
   let last = a:lastline
   let range = first.",".last
   let spaces = matchstr(getline(first),'^\s*')
-  let partial = fnamemodify(partial_name, ':r:r:s?\v(.*)_([^/^.]+)[^/]*?\1\2?')
+  let partial = fnamemodify(partial_name, ':r:r:s?\v(.*)_([^/^.]+)[^/]*?\1\2?:s?\v\?/?g')
 
   let buf = @@
   let ai = &ai
