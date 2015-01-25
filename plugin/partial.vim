@@ -63,6 +63,7 @@ let s:partial_templates_roots = [
 if exists("g:partial_templates_roots") | call extend(s:partial_templates_roots_re, g:partial_templates_roots) | endif
 let s:templates_roots_re = '\v(.*[\/])('.join(s:partial_templates_roots_re, '|').')[\/]'
 
+let s:partial_use_splits  = exists("g:partial_use_splits")  ? g:partial_use_splits  : 0
 let s:partial_keep_position  = exists("g:partial_keep_position")  ? g:partial_keep_position  : 1
 let s:partial_vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
 let s:partial_create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
@@ -138,7 +139,7 @@ function! s:partial(bang) range abort
   let &autoindent = autoindent
   let &splitright = splitright
   let &splitbelow = splitbelow
-  exe winnr . "wincmd w"
+  if s:partial_use_splits | exe winnr . "wincmd w" | else | close | endif
   let @@ = buf
 endfunction
 

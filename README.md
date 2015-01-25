@@ -55,6 +55,12 @@ Set this to 0 if you want to continue with the edition of the partial file
 Options: 0 or 1
 Default: 1 (Cursor stays on the same position after replacement)
 
+### g:partial_use_splits
+Set this to 1 if you want to keep the partial in a new window
+
+Options: 0 or 1
+Default: 0 (No splits)
+
 ### g:partial_vertical_split
 Set this to 1 if you to create a vertical split
 

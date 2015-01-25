@@ -18,8 +18,9 @@ CONTENTS                                                     *Partial-contents*
         2.3 partial_templates .................. |PartialConfig_templates|
         2.4 partial_templates_roots ...........  |PartialConfig_templates_root|
         2.5 partial_keep_position .............. |PartialConfig_keep_position|
-        2.6 partial_vertical_split ............. |PartialConfig_vertical_split|
-        2.7 partial_create_dirs ................ |PartialConfig_create_dirs|
+        2.6 partial_use_splits ................. |PartialConfig_use_splits|
+        2.7 partial_vertical_split ............. |PartialConfig_vertical_split|
+        2.8 partial_create_dirs ................ |PartialConfig_create_dirs|
     3. Implementation details................... |PartialModes|
     4. Contributing ............................ |PartialContributing|
     5. Bugs .................................... |PartialContributing|
@@ -90,7 +91,15 @@ Options: 0 or 1
 Default: 1 (Cursor stays on the same position after replacement)
 
 ------------------------------------------------------------------------------
-2.6 g:partial_vertical_split                     *PartialConfig_vertical_split*
+2.6 g:partial_use_splits                             *PartialConfig_use_splits*
+
+Set this to 1 if you want to keep the partial in a new window
+
+Options: 0 or 1
+Default: 0 (No splits)
+
+------------------------------------------------------------------------------
+2.7 g:partial_vertical_split                     *PartialConfig_vertical_split*
 
 Set this to 1 if you to create a vertical split
 
@@ -98,7 +107,7 @@ Options: 0 or 1
 Default: 0 (Horizontal split)
 
 ------------------------------------------------------------------------------
-2.7 g:partial_create_dirs                           *PartialConfig_create_dirs*
+2.8 g:partial_create_dirs                           *PartialConfig_create_dirs*
 
 Set this to 0 if you don't want Partial to create new directories
 
