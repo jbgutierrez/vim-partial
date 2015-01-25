@@ -50,9 +50,8 @@ let s:templates = {
       \   'slim' : "== render '%s'"
       \ }
 
-if exists("g:partial_templates")
-  call extend(s:templates, g:partial_templates)
-endif
+if exists("g:partial_templates") | call extend(s:templates, g:partial_templates) | endif
+let s:partial_keep_position  = exists("g:partial_keep_position")  ? g:partial_keep_position  : 1
 
 function! s:partial(bang) range abort
   let extension = expand('%:e')
@@ -85,15 +84,20 @@ function! s:partial(bang) range abort
   let partial = fnamemodify(partial_name, ':r:r:s?\v(.*)_([^/^.]+)[^/]*?\1\2?:s?\v\?/?g')
 
   let buf = @@
-  let ai = &ai
-  let &ai = 0
-  set splitright
+  let winnr = winnr()
+  let autoindent = &autoindent
+  let splitright = &splitright
+  let splitbelow = &splitbelow
+  let &autoindent = 0
+  if s:partial_keep_position
+    let &splitright = 1
+    let &splitbelow = 1
+  end
 
   let replacement = printf(template, partial)
   silent! exe range."yank"
   silent! exe "normal! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
 
-  vnew
   silent! put
   0delete
   if spaces != ""
@@ -106,10 +110,11 @@ function! s:partial(bang) range abort
     s:error('E80 Error while writing')
   endtry
 
-  let &ai = ai
+  let &autoindent = autoindent
+  let &splitright = splitright
+  let &splitbelow = splitbelow
+  exe winnr . "wincmd w"
   let @@ = buf
-  set nosplitright
-  wincmd h
 endfunction
 
 "}}}

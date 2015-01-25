@@ -15,7 +15,8 @@ CONTENTS                                                     *Partial-contents*
     2. Configurations ............................ |PartialConfig|
         2.1 Default Mapping ...................... |PartialConfig_mapping|
         2.2 loaded_partial ....................... |PartialConfig_debug|
-        2.3 partial_templates .................... |PartialConfig_disable|
+        2.3 partial_templates .................... |PartialConfig_templates|
+        2.4 partial_keep_position ................ |PartialConfig_keep_position|
     3. Implementation details..................... |PartialModes|
     4. Contributing .............................. |PartialContributing|
     5. Bugs ...................................... |PartialContributing|
@@ -46,7 +47,7 @@ You can easy map it to other keys. For example:
     vmap <Leader>P :PartialExtract<cr>
 
 ------------------------------------------------------------------------------
-2.1 g:loaded_partial                                     *PartialConfig_loaded*
+2.2 g:loaded_partial                                     *PartialConfig_loaded*
 
 Set this to 1 to force Partial to reload every time its file is sourced.
 
@@ -54,7 +55,7 @@ Options: 0 or 1
 Default: 0 (Partial is loaded only once)
 
 ------------------------------------------------------------------------------
-2.2 g:partial_templates                                *PartialConfig_templates*
+2.3 g:partial_templates                               *PartialConfig_templates*
 
 Common file extensions are supported (Markup: .dust, .erb, .haml, .slim -
 Stylesheet: .css, .less, .sass, .scss) and you can widen this list by
@@ -64,6 +65,14 @@ declaring a dictionary like so:
           \   'ejs': '<% include %s %>',
           \   'hbs': '{{> %s }}'
           \ }
+
+------------------------------------------------------------------------------
+2.4 g:partial_keep_position                       *PartialConfig_keep_position*
+
+Set this to 0 if you want to continue with the edition of the partial file
+
+Options: 0 or 1
+Default: 1 (Cursor stays on the same position after replacement)
 
 ==============================================================================
 3. Implementation details                                      *PartialLicense*
