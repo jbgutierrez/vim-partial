@@ -4,7 +4,7 @@ Partial plugin is a tool developed to help you break down your code into partial
 
 ## Usage
 Simply select some lines on Visual mode, hit `<leader>x`, enter the desired
-partial location and the plugin will place the appropiate replacement.
+partial location and the plugin will place the appropriate replacement.
 
 Let me show you:
 
@@ -25,7 +25,7 @@ The default mapping to extract a partial is `<leader>x`.
 You can easy map it to other keys. For example:
 
 ``` vim
-vmap <Leader>x :PartialExtract<cr>
+vmap <Leader>p :PartialExtract<cr>
 ```
 
 ### g:loaded_partial
@@ -39,7 +39,7 @@ declaring a dictionary like so:
 
 ``` vim
 let g:partial_templates = {
-      \   'ejs': '<% include %s %>',
+      \   'ejs': '<%% include %s %%>',
       \   'hbs': '{{> %s }}'
       \ }
 ```
