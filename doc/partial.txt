@@ -105,7 +105,7 @@ Partial creates directories as required. Set this to 0 if you don't want
 Partial to create new directories.
 
 ==============================================================================
-3. Implementation details                                      *PartialLicense*
+3. Implementation details                                        *PartialModes*
 
 After triggering :PartialExtract the editor will:
 
