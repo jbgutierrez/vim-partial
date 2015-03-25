@@ -34,7 +34,7 @@ time its file is sourced.
 
 ### g:partial_templates
 Common file extensions are supported (**Markup:** .dust, .erb, .haml, .slim -
-**Stylesheet:** .css, .less, .sass, .scss) and you can widen this list by
+**Stylesheets:** .css, .less, .sass, .scss) and you can widen this list by
 declaring a dictionary like so:
 
 ``` vim
@@ -89,7 +89,7 @@ Partial tries to set `suffixesadd` and `includeexpr` on
 
 ## Bugs
 
-Please report any bugs you may find on the GitHub [issue tracker](http://github.com/jbgutierrez/partial.vim/issues).
+Please report any bugs you may find on the GitHub [issue tracker](http://github.com/jbgutierrez/vim-partial/issues).
 
 ## Contributing
 
