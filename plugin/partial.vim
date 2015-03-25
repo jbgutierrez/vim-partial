@@ -68,18 +68,22 @@ let s:keep_position = exists("g:partial_keep_position") ? g:partial_keep_positio
 let s:vertical_split = exists("g:partial_vertical_split") ? g:partial_vertical_split : 0
 let s:create_dirs = exists("g:partial_create_dirs") ? g:partial_create_dirs : 1
 
-function! s:partial(bang) range abort
+function! s:get_template_context()
   let extension = expand('%:e')
   if !has_key(s:templates, extension)
     return s:error('Unsupported file type (see :help partial_templates)')
   endif
-  let template = s:templates[extension]
-
-  let filename = expand('%')
   let templates_root = expand('%:p:s?'.s:templates_roots_re.'.*?\1\2?')
   if templates_root == expand('%:p')
     return s:error("Destination path must be within a known root for templates (see :help partial_templates_roots)")
   endif
+
+  return [s:templates[extension], templates_root]
+endfunction
+
+function! s:partial_extract(bang) range abort
+  let [template, templates_root] = s:get_template_context()
+  let filename = expand('%')
   let basename = expand('%:p:s?'.s:templates_roots_re.'(.*)?\3?:r:r')
 
   let partial_name = input('Partial name: ', basename, 'file')
@@ -143,13 +147,37 @@ function! s:partial(bang) range abort
   let @@ = buf
 endfunction
 
+function! s:partial_dispose(bang)
+  let [template, templates_root] = s:get_template_context()
+
+  let filename = expand('%')
+  let template = substitute(template, '%%', '%', 'g')
+  let pat = '(\s*)'.substitute(template, '%s', '(.*)', '')
+  let pat = escape(pat, '()')
+  let matchlist = matchlist(getline('.'), pat)
+  if len(matchlist) > 0
+    let extensions = fnamemodify(filename, ':e:e')
+    let partial_name = matchlist[2].'.'.extensions
+    delete
+    let partial_path = templates_root."/".partial_name
+    let lineno=line('.') - 1
+    for line in reverse(readfile(partial_path))
+      call append(lineno, matchlist[1].line)
+    endfor
+
+    if a:bang | call delete(partial_path) | endif
+
+  else
+    return s:error("No partial found")
+  endif
+endfunction
+
 "}}}
 
 " Commands {{{
 
-if !exists(":PartialExtract")
-  command -bang -range PartialExtract <line1>,<line2>call <sid>partial(<bang>0)
-endif
+command! -bang -range PartialExtract <line1>,<line2>call <sid>partial_extract(<bang>0)
+command! -bang PartialDispose call <sid>partial_dispose(<bang>0)
 
 "}}}
 
