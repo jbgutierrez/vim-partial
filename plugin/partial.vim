@@ -13,6 +13,7 @@ let g:loaded_partial = 1
 
 if !hasmapto(':PartialExtract')
   vmap <unique> <leader>x :PartialExtract<cr>
+  nmap <unique> <leader>x :PartialDispose<cr>
 endif
 
 " }}}
@@ -156,17 +157,21 @@ function! s:partial_dispose(bang)
   let pat = escape(pat, '()')
   let matchlist = matchlist(getline('.'), pat)
   if len(matchlist) > 0
+    let choice = a:bang
+    if !choice
+      let choice = confirm("Remove partial file?", "&Yes\n&No\n&Cancel")
+      if choice == 0 | return | endif
+    endif
     let extensions = fnamemodify(filename, ':e:e')
     let partial_name = matchlist[2].'.'.extensions
     delete
     let partial_path = templates_root."/".partial_name
-    let lineno=line('.') - 1
+    let lineno=line('.')
     for line in reverse(readfile(partial_path))
-      call append(lineno, matchlist[1].line)
+      call append(lineno - 1, matchlist[1].line)
     endfor
-
-    if a:bang | call delete(partial_path) | endif
-
+    call cursor(lineno, col('.'))
+    if choice == 1 | call delete(partial_path) | endif
   else
     return s:error("No partial found")
   endif

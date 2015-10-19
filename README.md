@@ -21,11 +21,14 @@ You can tweak the behavior of Partial by setting a few variables in your
 `vimrc` file.
 
 ### Default Mapping
-The default mapping to extract a partial is `<leader>x`.
+The default mapping to extract a partial is `<leader>x` in visual mode.
+The same mapping will dispose an existing partial in normal mode.
+
 You can easy map it to other keys. For example:
 
 ``` vim
 vmap <Leader>p :PartialExtract<cr>
+nmap <Leader>p :PartialDispose<cr>
 ```
 
 ### g:loaded_partial

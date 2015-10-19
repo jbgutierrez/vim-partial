@@ -35,7 +35,7 @@ CONTENTS                                                     *Partial-contents*
 
 Partial plugin is a tool developed to help you break down your code into
 partials. Simply select some lines on Visual mode, hit <leader>x, enter the
-desired partial location and the plugin will place the appropiate replacement.
+desired partial location and the plugin will place the appropriate replacement.
 
 ==============================================================================
 2. Configuration                                                *PartialConfig*
@@ -46,10 +46,13 @@ vimrc file. For example: >
 ------------------------------------------------------------------------------
 2.1 Default Mapping                                     *PartialConfig_mapping*
 
-The default mapping to extract a partial is <leader>x.
+The default mapping to extract a partial is <leader>x in visual mode.
+The same mapping will dispose an existing partial in normal mode.
+
 You can easy map it to other keys. For example:
 
     vmap <Leader>P :PartialExtract<cr>
+    nmap <Leader>P :PartialDispose<cr>
 
 ------------------------------------------------------------------------------
 2.2 g:loaded_partial                                     *PartialConfig_loaded*
