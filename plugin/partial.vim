@@ -76,14 +76,16 @@ function! s:get_template_context()
   endif
   let templates_root = expand('%:p:s?'.s:templates_roots_re.'.*?\1\2?')
   if templates_root == expand('%:p')
-    return s:error("Destination path must be within a known root for templates (see :help partial_templates_roots)")
+    return s:error("Destination path must be within a known root for templates (see :help PartialConfig_templates_root)")
   endif
 
   return [s:templates[extension], templates_root]
 endfunction
 
 function! s:partial_extract(bang) range abort
-  let [template, templates_root] = s:get_template_context()
+  let template_context = s:get_template_context()
+  if empty(template_context) | return | endif
+  let [template, templates_root] = template_context
   let filename = expand('%')
   let basename = expand('%:p:s?'.s:templates_roots_re.'(.*)?\3?:r:r')
 
@@ -102,7 +104,7 @@ function! s:partial_extract(bang) range abort
     if s:create_dirs
       call mkdir(folder, 'p')
     else
-      return s:error("Folder '".folder."' doesn't exists (see :help partial_create_dirs)")
+      return s:error("Folder '".folder."' doesn't exists (see :help PartialConfig_create_dirs)")
     endif
   endif
 
